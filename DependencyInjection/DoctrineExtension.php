@@ -53,6 +53,7 @@ use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Messenger\Bridge\Doctrine\EventListener\PostgreSqlWaitForPgNotifyOnIdleListener;
 use Symfony\Component\Messenger\Bridge\Doctrine\Transport\DoctrineTransportFactory;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractorInterface;
@@ -1101,6 +1102,10 @@ class DoctrineExtension extends AbstractDoctrineExtension
 
         if (! class_exists(DoctrineClearEntityManagerWorkerSubscriber::class)) {
             $container->removeDefinition('doctrine.orm.messenger.event_subscriber.doctrine_clear_entity_manager');
+        }
+
+        if (! class_exists(PostgreSqlWaitForPgNotifyOnIdleListener::class)) {
+            $container->removeDefinition('messenger.transport.doctrine.postgre_sql_wait_for_pg_notify_on_idle_listener');
         }
 
         // available in Symfony 5.1 and higher

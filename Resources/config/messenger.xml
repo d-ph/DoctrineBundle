@@ -44,11 +44,17 @@
         -->
         <service id="messenger.transport.doctrine.factory" class="Symfony\Component\Messenger\Bridge\Doctrine\Transport\DoctrineTransportFactory" public="false">
             <argument type="service" id="doctrine" />
+            <argument type="service" id="messenger.transport.doctrine.postgre_sql_wait_for_pg_notify_on_idle_listener" />
         </service>
 
         <service id="doctrine.orm.messenger.event_subscriber.doctrine_clear_entity_manager" class="Symfony\Bridge\Doctrine\Messenger\DoctrineClearEntityManagerWorkerSubscriber" public="false">
             <tag name="kernel.event_subscriber" />
             <argument type="service" id="doctrine" />
+        </service>
+
+        <service id="messenger.transport.doctrine.postgre_sql_wait_for_pg_notify_on_idle_listener" class="Symfony\Component\Messenger\Bridge\Doctrine\EventListener\PostgreSqlWaitForPgNotifyOnIdleListener" public="false">
+            <tag name="kernel.event_subscriber" />
+            <argument type="service" id="logger" />
         </service>
 
         <service id="doctrine.orm.messenger.doctrine_schema_subscriber" class="Symfony\Bridge\Doctrine\SchemaListener\MessengerTransportDoctrineSchemaSubscriber">
